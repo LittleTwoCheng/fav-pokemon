@@ -5,5 +5,5 @@ import styles from "./index.module.css";
 export default function PokemonDetail() {
   const { query, isReady } = useRouter();
   const name = String(query.name);
-  return <Layout></Layout>;
+  return <Layout>TODO</Layout>;
 }

@@ -5,5 +5,5 @@ import styles from "./index.module.css";
 export default function PokemonHome() {
   const { data, isLoading } = useGetPokemonList();
   console.log(data);
-  return <Layout></Layout>;
+  return <Layout>TODO</Layout>;
 }
