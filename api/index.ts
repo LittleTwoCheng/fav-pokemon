@@ -30,3 +30,18 @@ export async function getPokemonDetail(name: string) {
 
   return await response.json();
 }
+
+export async function submitFavPokemon(name: string) {
+  const response = await fetch(`/api/fav/${name}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json; charset=utf-8",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`API error ${response.status}`);
+  }
+
+  return await response.json();
+}

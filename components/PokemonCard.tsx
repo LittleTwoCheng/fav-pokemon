@@ -8,7 +8,9 @@ import {
   Skeleton,
   Typography,
 } from "@mui/material";
+import { useState } from "react";
 import { useGetPokemonDetail } from "../api/useGetPokemonDetail";
+import { useSubmitFavPokemon } from "../api/useSubmitFavPokemon";
 
 type PokemonCardProps = {
   name: string;
@@ -16,6 +18,11 @@ type PokemonCardProps = {
 
 export function PokemonCard({ name = "Poke Ball" }: PokemonCardProps) {
   const { data, isLoading } = useGetPokemonDetail(name);
+  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
+  const mutation = useSubmitFavPokemon(() => {
+    setIsSubmitted(true);
+  });
+
   if (isLoading) {
     return (
       <Card>
@@ -26,7 +33,7 @@ export function PokemonCard({ name = "Poke Ball" }: PokemonCardProps) {
         </CardContent>
         <CardActions>
           <Button size="small" disabled>
-            Share
+            Fav
           </Button>
           <Button size="small" disabled>
             Learn More
@@ -35,6 +42,7 @@ export function PokemonCard({ name = "Poke Ball" }: PokemonCardProps) {
       </Card>
     );
   }
+
   return (
     <Card>
       <CardMedia
@@ -48,12 +56,20 @@ export function PokemonCard({ name = "Poke Ball" }: PokemonCardProps) {
         <Typography gutterBottom variant="h5" component="div">
           {data.name}
         </Typography>
-        {data.types.map((type: any) => (
-          <Chip key={type.type} label={type.type.name} />
+        {data.types.map((type: any, index: number) => (
+          <Chip key={`${index}-${type.type}`} label={type.type.name} />
         ))}
       </CardContent>
       <CardActions>
-        <Button size="small">Share</Button>
+        <Button
+          size="small"
+          onClick={() => {
+            mutation.mutate(data.name);
+          }}
+          disabled={isSubmitted}
+        >
+          Fav
+        </Button>
         <Button size="small">Learn More</Button>
       </CardActions>
     </Card>
